@@ -1,7 +1,5 @@
 # Recurrent Neural Network
 
-
-
 # Part 1 - Data Preprocessing
 
 # Importing the libraries
@@ -29,33 +27,31 @@ X_train, y_train = np.array(X_train), np.array(y_train)
 # Reshaping
 X_train = np.reshape(X_train, (X_train.shape[0], X_train.shape[1], 1))
 
-
-
 # Part 2 - Building the RNN
 
 # Importing the Keras libraries and packages
 from keras.models import Sequential
 from keras.layers import Dense
-from keras.layers import LSTM
+from keras.layers import GRU
 from keras.layers import Dropout
 
 # Initialising the RNN
 regressor = Sequential()
 
-# Adding the first LSTM layer and some Dropout regularisation
-regressor.add(LSTM(units = 50, return_sequences = True, input_shape = (X_train.shape[1], 1)))
+# Adding the first GRU layer and some Dropout regularisation
+regressor.add(GRU(units = 50, return_sequences = True, input_shape = (X_train.shape[1], 1)))
 regressor.add(Dropout(0.2))
 
-# Adding a second LSTM layer and some Dropout regularisation
-regressor.add(LSTM(units = 50, return_sequences = True))
+# Adding a second GRU layer and some Dropout regularisation
+regressor.add(GRU(units = 50, return_sequences = True))
 regressor.add(Dropout(0.2))
 
-# Adding a third LSTM layer and some Dropout regularisation
-regressor.add(LSTM(units = 50, return_sequences = True))
+# Adding a third GRU layer and some Dropout regularisation
+regressor.add(GRU(units = 50, return_sequences = True))
 regressor.add(Dropout(0.2))
 
-# Adding a fourth LSTM layer and some Dropout regularisation
-regressor.add(LSTM(units = 50))
+# Adding a fourth GRU layer and some Dropout regularisation
+regressor.add(GRU(units = 50))
 regressor.add(Dropout(0.2))
 
 # Adding the output layer
