@@ -1,7 +1,5 @@
 # Recurrent Neural Network
 
-
-
 # Part 1 - Data Preprocessing
 
 # Importing the libraries
@@ -65,7 +63,7 @@ regressor.add(Dense(units = 1))
 regressor.compile(optimizer = 'adam', loss = 'mean_squared_error')
 
 # Fitting the RNN to the Training set
-regressor.fit(X_train, y_train, epochs = 100, batch_size = 32)
+regressor.fit(X_train, y_train, epochs = 10, batch_size = 32)
 
 
 
