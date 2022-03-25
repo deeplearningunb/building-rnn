@@ -1,4 +1,12 @@
-# Recurrent Neural Network
+#!/usr/bin/env python
+# coding: utf-8
+
+# # Recurrent Neural Networks
+# 
+# calcular o preço das ações do google
+
+# In[1]:
+
 
 # Part 1 - Data Preprocessing
 
@@ -7,14 +15,26 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 
+
+# In[2]:
+
+
 # Importing the training set
 dataset_train = pd.read_csv('Google_Stock_Price_Train.csv')
 training_set = dataset_train.iloc[:, 1:2].values
+
+
+# In[3]:
+
 
 # Feature Scaling
 from sklearn.preprocessing import MinMaxScaler
 sc = MinMaxScaler(feature_range = (0, 1))
 training_set_scaled = sc.fit_transform(training_set)
+
+
+# In[4]:
+
 
 # Creating a data structure with 60 timesteps and 1 output
 X_train = []
@@ -26,7 +46,10 @@ X_train, y_train = np.array(X_train), np.array(y_train)
 
 # Reshaping
 X_train = np.reshape(X_train, (X_train.shape[0], X_train.shape[1], 1))
+X_train
 
+
+# In[5]:
 
 
 # Part 2 - Building the RNN
@@ -34,27 +57,27 @@ X_train = np.reshape(X_train, (X_train.shape[0], X_train.shape[1], 1))
 # Importing the Keras libraries and packages
 from keras.models import Sequential
 from keras.layers import Dense
-from keras.layers import LSTM
+from keras.layers import GRU
 from keras.layers import Dropout
 
 # Initialising the RNN
 regressor = Sequential()
 
 # Adding the first LSTM layer and some Dropout regularisation
-regressor.add(LSTM(units = 50, return_sequences = True, input_shape = (X_train.shape[1], 1)))
-regressor.add(Dropout(0.2))
+regressor.add(GRU(units = 50, return_sequences = True, input_shape = (X_train.shape[1], 1)))
+regressor.add(Dropout(0.1))
 
 # Adding a second LSTM layer and some Dropout regularisation
-regressor.add(LSTM(units = 50, return_sequences = True))
-regressor.add(Dropout(0.2))
+regressor.add(GRU(units = 50, return_sequences = True))
+regressor.add(Dropout(0.1))
 
 # Adding a third LSTM layer and some Dropout regularisation
-regressor.add(LSTM(units = 50, return_sequences = True))
-regressor.add(Dropout(0.2))
+regressor.add(GRU(units = 50, return_sequences = True))
+regressor.add(Dropout(0.1))
 
 # Adding a fourth LSTM layer and some Dropout regularisation
-regressor.add(LSTM(units = 50))
-regressor.add(Dropout(0.2))
+regressor.add(GRU(units = 50))
+regressor.add(Dropout(0.1))
 
 # Adding the output layer
 regressor.add(Dense(units = 1))
@@ -62,9 +85,15 @@ regressor.add(Dense(units = 1))
 # Compiling the RNN
 regressor.compile(optimizer = 'adam', loss = 'mean_squared_error')
 
+
+# In[6]:
+
+
 # Fitting the RNN to the Training set
 regressor.fit(X_train, y_train, epochs = 10, batch_size = 32)
 
+
+# In[7]:
 
 
 # Part 3 - Making the predictions and visualising the results
@@ -86,6 +115,10 @@ X_test = np.reshape(X_test, (X_test.shape[0], X_test.shape[1], 1))
 predicted_stock_price = regressor.predict(X_test)
 predicted_stock_price = sc.inverse_transform(predicted_stock_price)
 
+
+# In[8]:
+
+
 # Visualising the results
 plt.plot(real_stock_price, color = 'red', label = 'Real Google Stock Price')
 plt.plot(predicted_stock_price, color = 'blue', label = 'Predicted Google Stock Price')
@@ -94,3 +127,6 @@ plt.xlabel('Time')
 plt.ylabel('Google Stock Price')
 plt.legend()
 plt.show()
+
+
+# ## FIM
